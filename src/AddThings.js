@@ -1,9 +1,9 @@
 import React from 'react'
 import './AddThings.css'
 
-const AddThings = () => {
+const AddThings = (props) => {
   return (
-    <button className="add-thing">Add Thing</button>
+    <button className="add-thing" onClick={props.addThings}>Add Thing</button>
   )
 }
 
