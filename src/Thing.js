@@ -1,12 +1,12 @@
 import React from 'react'
 import './Thing.css'
 
-const Thing = ({ thing }) => {
+const Thing = ({ thing }, { ev }) => {
   return (
     <li className="Thing">
       <input type="checkbox" value="on" />
       <div className="details">
-        <div className="name">
+        <div className="name" placeholder="Enter Item Here" contentEditable="true" >
           {thing.name}
         </div>
         <span className="actions">

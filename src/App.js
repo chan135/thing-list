@@ -8,25 +8,29 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      things: {
-        'thing-1': { id: 'thing-1', name: 'Milk' },
-        'thing-2': { id: 'thing-2', name: 'Bread' },
-        'thing-3': { id: 'thing-3', name: 'Bibb lettuce' },
-      }
+      things: {}
     }
+    this.count = 1
     this.addThings = this.addThings.bind(this)
   }
   
 addThings(ev) {
   const state = {...this.state}
   const thing = {
-    id: 'thing-4',
-    name: 'Cereal',
+    id: this.count,
+    name: '',
   }
-
-  state.things['thing-4'] = thing
+  
+  state.things[this.count++] = thing
   
   this.setState(state, () => console.log(state))
+}
+
+saveOnEnter(ev) {
+  if (ev.keyCode === 13) {
+    ev.preventDefault()
+    ev.target.blur()
+  }
 }
 
   render() {
@@ -34,7 +38,7 @@ addThings(ev) {
       <div className="App">
         <Header />
         <AddThings addThings={this.addThings}/>
-        <ThingList things={this.state.things} />
+        <ThingList things={this.state.things} ev = {this.saveOnEnter} />
       </div>
     );
   }
