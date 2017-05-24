@@ -32,6 +32,11 @@ saveThing = (thing) => {
   this.setState ({ things })
 }
 
+removeThing = (thing) => {
+  const things = {...this.state.things}
+  delete things[thing.id]
+  this.setState( { things })
+}
 
   render() {
     return (
@@ -39,7 +44,9 @@ saveThing = (thing) => {
         <Header />
         <AddThings addThings={this.addThings}/>
         <ThingList things={this.state.things} 
-        saveThing = {this.saveThing} />
+        saveThing = {this.saveThing}
+        removeThing = {this.removeThing}
+         />
       </div>
     );
   }
