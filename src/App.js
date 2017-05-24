@@ -23,22 +23,23 @@ addThings(ev) {
   
   state.things[this.count++] = thing
   
-  this.setState(state, () => console.log(state))
+  this.setState(state)// () => console.log(state))
 }
 
-saveOnEnter(ev) {
-  if (ev.keyCode === 13) {
-    ev.preventDefault()
-    ev.target.blur()
-  }
+saveThing = (thing) => {
+  const things = {...this.state.things}
+  things[thing.id] = thing
+  this.setState ({ things })
 }
+
 
   render() {
     return (
       <div className="App">
         <Header />
         <AddThings addThings={this.addThings}/>
-        <ThingList things={this.state.things} ev = {this.saveOnEnter} />
+        <ThingList things={this.state.things} 
+        saveThing = {this.saveThing} />
       </div>
     );
   }

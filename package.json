@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "editable": "^1.1.0",
     "react": "^15.5.4",
+    "react-content": "^0.0.1",
+    "react-contenteditable": "^2.0.2",
     "react-dom": "^15.5.4"
   },
   "devDependencies": {
