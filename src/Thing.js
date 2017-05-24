@@ -40,7 +40,7 @@ class Thing extends Component {
 
     return (
       <li className="Thing">
-        <input type="checkbox" value="on" onChange={this.updateCompleted}/>
+        <input type="checkbox" value="on" checked={thing.completed} onChange={this.updateCompleted}/>
         <div className="details">
           <ContentEditable
             className="name"
@@ -49,7 +49,7 @@ class Thing extends Component {
             onKeyPress={this.blurOnEnter}
             ref={input => this.nameInput = input}
           />
-          <input type="date" onChange={this.updateDate}/>
+          <input type="date" defaultValue={thing.dueDate} onChange={this.updateDate}/>
           <Actions thing={thing} removeThing={removeThing} />
         </div>
       </li>
