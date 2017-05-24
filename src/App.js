@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import './App.css';
 import Header from './Header'
 import ThingList from './ThingList'
@@ -6,56 +7,62 @@ import AddThings from './AddThings'
 import base from './base'
 
 class App extends Component {
-
   componentWillMount() {
-    this.ref = base.syncState('things', {
-      context:this,
-      state: 'things',
-
-    })
+    this.ref = base.syncState(
+      'things',
+      {
+        context: this,
+        state: 'things'
+      }
+    )
   }
-  constructor(props) {
-    super(props)
-    this.state = {
-      things: {}
+
+  state = {
+    things: {}
+  }
+
+  thing() {
+    return {
+      id: `thing-${Date.now()}`,
+      name: '',
+      completed: false,
+      dueDate: '1997/04/04',
     }
-    this.count = 1
-    this.addThings = this.addThings.bind(this)
   }
-  
-addThings(ev) {
-  const state = {...this.state}
-  const thing = {
-    id: this.count,
-    name: '',
+
+  addThing = () => {
+    const things = {...this.state.things}
+    const thing = this.thing()
+    things[thing.id] = thing
+    this.setState({ things })
   }
-  
-  state.things[this.count++] = thing
-  
-  this.setState(state)// () => console.log(state))
-}
 
-saveThing = (thing) => {
-  const things = {...this.state.things}
-  things[thing.id] = thing
-  this.setState ({ things })
-}
+  saveThing = (thing) => {
+    const things = {...this.state.things}
+    things[thing.id] = thing
+    this.setState({ things })
+  }
 
-removeThing = (thing) => {
-  const things = {...this.state.things}
-  things[thing.id] = null
-  this.setState( { things })
-}
+  removeThing = (thing) => {
+    const things = {...this.state.things}
+    things[thing.id] = null
+    this.setState({ things })
+  }
 
   render() {
+    const actions = {
+      saveThing: this.saveThing,
+      removeThing: this.removeThing,
+    }
+
     return (
       <div className="App">
         <Header />
-        <AddThings addThings={this.addThings}/>
-        <ThingList things={this.state.things} 
-        saveThing = {this.saveThing}
-        removeThing = {this.removeThing}
-         />
+        <AddThings addThing={this.addThing} />
+        <ThingList
+          things={this.state.things}
+          {...actions}
+        />
       </div>
     );
   }

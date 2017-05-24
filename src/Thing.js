@@ -1,14 +1,16 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import ContentEditable from 'react-contenteditable'
+
 import './Thing.css'
 import Actions from './Actions'
 
 class Thing extends Component {
   componentDidMount() {
-    if (!this.nameInput.htmlEl.textContent){
+    if (!this.nameInput.htmlEl.textContent) {
       this.nameInput.htmlEl.focus()
     }
   }
+
   updateName = (ev) => {
     const { thing, saveThing } = this.props
     thing.name = ev.target.value
@@ -21,21 +23,34 @@ class Thing extends Component {
       ev.target.blur()
     }
   }
+  updateCompleted = (ev) => {
+    const {thing, saveThing} = this.props
+    thing.completed = !thing.completed
+    saveThing(thing)
+  }
+
+  updateDate = (ev) => {
+    const {thing, saveThing} = this.props
+    thing.dueDate = ev.target.value
+    saveThing(thing)
+  }
+
   render() {
     const { thing, removeThing } = this.props
 
     return (
       <li className="Thing">
-        <input type="checkbox" value="on" />
+        <input type="checkbox" value="on" onChange={this.updateCompleted}/>
         <div className="details">
-          <ContentEditable 
+          <ContentEditable
             className="name"
             html={thing.name}
             onChange={this.updateName}
-            ref={input => this.nameInput = input}
             onKeyPress={this.blurOnEnter}
+            ref={input => this.nameInput = input}
           />
-          <Actions removeThing={removeThing} thing = {thing}/> 
+          <input type="date" onChange={this.updateDate}/>
+          <Actions thing={thing} removeThing={removeThing} />
         </div>
       </li>
     )
