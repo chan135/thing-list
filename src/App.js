@@ -3,8 +3,17 @@ import './App.css';
 import Header from './Header'
 import ThingList from './ThingList'
 import AddThings from './AddThings'
+import base from './base'
 
 class App extends Component {
+
+  componentWillMount() {
+    this.ref = base.syncState('things', {
+      context:this,
+      state: 'things',
+
+    })
+  }
   constructor(props) {
     super(props)
     this.state = {
@@ -34,7 +43,7 @@ saveThing = (thing) => {
 
 removeThing = (thing) => {
   const things = {...this.state.things}
-  delete things[thing.id]
+  things[thing.id] = null
   this.setState( { things })
 }
 
