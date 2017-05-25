@@ -4,15 +4,29 @@ import './App.css';
 import Header from './Header'
 import ThingList from './ThingList'
 import AddThings from './AddThings'
-import base from './base'
 import SignIn from './SignIn'
 import SignOut from './SignOut'
-import { auth } from './base'
+import base, { auth } from './base'
 
 class App extends Component {
+  state = {
+    things: {},
+    uid: null
+  }
+
   componentWillMount() {
+    auth.onAuthStateChanged(
+      (user) => {
+        if (user) {
+          this.authHandler({ user })
+        }
+      }
+    )
+  }
+
+  setupThings = () => {
     this.ref = base.syncState(
-      'things',
+      `${this.state.uid}/things`,
       {
         context: this,
         state: 'things'
@@ -20,8 +34,11 @@ class App extends Component {
     )
   }
 
-  state = {
-    things: {}
+  authHandler = (authData) => {
+    this.setState(
+      { uid: authData.user.uid },
+      this.setupThings
+    )
   }
 
   thing() {
@@ -29,7 +46,7 @@ class App extends Component {
       id: `thing-${Date.now()}`,
       name: '',
       completed: false,
-      dueDate: '1997/04/04',
+      dueOn: '',
     }
   }
 
@@ -53,25 +70,35 @@ class App extends Component {
   }
 
   signOut = () => {
-    auth.signOut()
+    auth
+      .signOut()
+      .then(() => this.setState({ uid: null }))
   }
 
-  render() {
+  renderThings() {
     const actions = {
       saveThing: this.saveThing,
       removeThing: this.removeThing,
     }
 
     return (
-      <div className="App">
-        <Header />
-        <SignIn />
-        <SignOut signOut={this.signOut}/>
+      <div>
+        <SignOut signOut={this.signOut} />
         <AddThings addThing={this.addThing} />
         <ThingList
           things={this.state.things}
           {...actions}
         />
+      </div>
+    )
+  }
+
+  render() {
+
+    return (
+      <div className="App">
+        <Header />
+        { this.state.uid ? this.renderThings() : <SignIn authHandler={this.authHandler} /> }
       </div>
     );
   }
