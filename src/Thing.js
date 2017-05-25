@@ -40,7 +40,7 @@ class Thing extends Component {
 
     return (
       <li className="Thing">
-        <input type="checkbox" value="on" checked={thing.completed} onChange={this.updateCompleted}/>
+        <input type="checkbox" value="on" defaultChecked={thing.completed} onChange={this.updateCompleted}/>
         <div className="details">
           <ContentEditable
             className="name"
